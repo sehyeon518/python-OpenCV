@@ -1,1 +1,3 @@
-this is test README.md
+Kookmin Univ.
+college of computer science
+KOBOT
