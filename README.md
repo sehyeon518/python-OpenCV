@@ -1,3 +1,3 @@
 Kookmin Univ.
-college of software
+college of computer science
 KOBOT
