@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 cap = cv2.VideoCapture('/home/sehyeon/Documents/GitHub/python-OpenCV/practice_arrow/arrow.mp4')
-
+# (720, 1080)
 
 while True:
     retval, src = cap.read()
@@ -10,9 +10,12 @@ while True:
         break
 
     gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (9,9) ,0)
+    blur = cv2.GaussianBlur(gray, (3,3) ,0)
 
     edges = cv2.Canny(blur, 50, 100)
+    # -> prspective transform
+    # -> contour 
+
 
     lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180.0, threshold=30)
     for line in lines:
@@ -21,7 +24,7 @@ while True:
     
     cv2.imshow('blur', src)
 
-    key = cv2.waitKey(25)
+    key = cv2.waitKey()
     if key == 27:
         break
 
