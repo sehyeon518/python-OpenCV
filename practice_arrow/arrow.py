@@ -15,15 +15,30 @@ while True:
     gray = cv2.GaussianBlur(gray, (3,3) ,0)
     
     # 8.6 cv2.goodFeaturesToTrack()
-    corners = cv2.goodFeaturesToTrack(gray, maxCorners=10, qualityLevel=0.05, minDistance=30) # type(corners) = numpy.ndarray
+    corners = cv2.goodFeaturesToTrack(gray, maxCorners=10, qualityLevel=0.05, minDistance=80) # type(corners) = numpy.ndarray
     dst = src.copy()
     corners = corners.reshape(-1,2) # reshape -> (X rows) * (2 columns)
-    for x, y in corners:
+
+    # delete outlier
+    mean = np.mean(corners, axis=0)
+    std = np.std(corners, axis=0)
+
+    # stdx = np.std(corners[:,0])
+    # stdy = np.std(corners[:,1])
+    outlier_mask = np.logical_or(corners <= mean - 2 * std, corners >= mean + 2 * std)
+    filtered_data = corners[~outlier_mask.any(axis=1)]
+
+    # (arrow) center point
+    ax = np.mean(filtered_data[:, 0])
+    ay = np.mean(filtered_data[:, 1])
+
+    for x, y in filtered_data:
         cv2.circle(dst, (int(x), int(y)), 5, (0,0,255), -1)
+    cv2.circle(dst, (int(ax), int(ay)), 10, (0,255,0), -1)
     
     cv2.imshow('dst', dst)
 
-    key = cv2.waitKey(25)
+    key = cv2.waitKey(30)
     if key == 27:
         break
 
