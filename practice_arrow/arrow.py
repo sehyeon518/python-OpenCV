@@ -15,9 +15,9 @@ while True:
     gray = cv2.GaussianBlur(gray, (3,3) ,0)
     
     # 8.6 cv2.goodFeaturesToTrack()
-    corners = cv2.goodFeaturesToTrack(gray, maxCorners=10, qualityLevel=0.05, minDistance=30)
+    corners = cv2.goodFeaturesToTrack(gray, maxCorners=10, qualityLevel=0.05, minDistance=30) # type(corners) = numpy.ndarray
     dst = src.copy()
-    corners = corners.reshape(-1,2)
+    corners = corners.reshape(-1,2) # reshape -> (X rows) * (2 columns)
     for x, y in corners:
         cv2.circle(dst, (int(x), int(y)), 5, (0,0,255), -1)
     
