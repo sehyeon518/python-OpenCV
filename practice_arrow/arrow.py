@@ -6,25 +6,24 @@ cap = cv2.VideoCapture('/home/sehyeon/Documents/GitHub/python-OpenCV/practice_ar
 
 while True:
     retval, src = cap.read()
+    cy, cx, _ = src.shape # 1080, 720
     if not retval:
         break
 
+    # cvtColor, blur
     gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (3,3) ,0)
-
-    edges = cv2.Canny(blur, 50, 100)
-    # -> prspective transform
-    # -> contour 
-
-
-    lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180.0, threshold=30)
-    for line in lines:
-        x1, y1, x2, y2 = line[0]
-        cv2.line(src, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    gray = cv2.GaussianBlur(gray, (3,3) ,0)
     
-    cv2.imshow('blur', src)
+    # 8.6 cv2.goodFeaturesToTrack()
+    corners = cv2.goodFeaturesToTrack(gray, maxCorners=10, qualityLevel=0.05, minDistance=30)
+    dst = src.copy()
+    corners = corners.reshape(-1,2)
+    for x, y in corners:
+        cv2.circle(dst, (int(x), int(y)), 5, (0,0,255), -1)
+    
+    cv2.imshow('dst', dst)
 
-    key = cv2.waitKey()
+    key = cv2.waitKey(25)
     if key == 27:
         break
 
