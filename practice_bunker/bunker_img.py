@@ -34,14 +34,37 @@ def onMouse(event,x,y,flags,param):     # 마우스 이벤트 핸들 함수  ---
 # img read
 src = cv2.imread('/home/sehyeon/Documents/GitHub/python-OpenCV/practice_bunker/bunker_1.jpg')
 src = cv2.GaussianBlur(src, ksize=(11,11), sigmaX = 10.0)
-src_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
+cv2.imshow('src', src)
+# src_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
 
-# cvt color -> black or white
-dst1 = cv2.inRange(src, (200, 200, 200), (255, 255, 255)) # 1. BGR
+
+# ROI 바깥 영역을 검정색(0,0,0)으로
+cv2.setMouseCallback('src', onMouse) # 마우스 이벤트 등록 ---⑧
+cv2.waitKey()
+
+if roi is not None:
+    mask = np.zeros_like(src)
+    mask[:,:] = (255, 255, 255)  # 흰색으로 채움
+    mask[y0:y0+h, x0:x0+w] = src[y0:y0+h, x0:x0+w]
+    image_with_color = cv2.bitwise_and(src, mask)
+    image_with_color[np.where((mask==255).all(axis=2))] = (0, 0, 0)  # 바깥부분을 빨간색으로 채움
+    cv2.imshow('mask', image_with_color)
+
+
+# 밝은 색 추출
+# cvt color -> black(255) or white(0) -> grayscale로 자동 변환
+dst1 = cv2.inRange(image_with_color, (200, 200, 200), (255, 255, 255)) # 1. BGR
 # dst2 = cv2.inRange(src_hsv, (0, 0, 90), (200, 0, 100))    # 2. HSV
 
-cv2.imshow('src', src)
+
+# contours
+mode = cv2.RETR_LIST
+method = cv2.CHAIN_APPROX_SIMPLE
+_, contours, hierarchy = cv2.findContours(dst1, mode, method)
+cv2.drawContours(dst1, contours, -1, (0,255,255), 3)
+
 cv2.imshow('dst1', dst1)
+
 
 cv2.waitKey()
 cv2.destroyAllWindows()
