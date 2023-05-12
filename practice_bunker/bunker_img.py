@@ -56,17 +56,9 @@ if roi is not None:
 # cvt color -> black(255) or white(0) -> grayscale로 자동 변환
 dst1 = cv2.inRange(image_with_color, (200, 200, 200), (255, 255, 255)) # 1. BGR
 cv2.imshow('dst1', dst1)
-# dst2 = cv2.inRange(src_hsv, (0, 0, 90), (200, 0, 100))    # 2. HSV
 
-
-# contours
-mode = cv2.RETR_LIST
-method = cv2.CHAIN_APPROX_SIMPLE
-_, contours, hierarchy = cv2.findContours(dst1, mode, method)
-cv2.drawContours(dst1, contours, -1, (0,255,255), 3)
 
 # 가장 왼쪽 점과 가장 오른쪽 점 찾기
-# x = np.zeros((src.shape[0], 1), dtype=np.uint8) + 255 # (333,1)
 leftmost_point = (0,0)
 for i in range(src.shape[1]):
     tmp = np.reshape(dst1[:, i], (src.shape[0], -1)) # column (333,1)
