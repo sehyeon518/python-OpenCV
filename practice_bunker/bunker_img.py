@@ -86,6 +86,10 @@ for i in range(src.shape[1]-1, 0, -1):
     else:
         continue
 
+cv2.circle(src, leftmost_point, 10, (0,0,255), -1)
+cv2.circle(src, rightmost_point, 10, (0,0,255), -1)
+cv2.putText(src, ', '.join(str(x) for x in leftmost_point), leftmost_point, cv2.FONT_HERSHEY_SIMPLEX, 1, 128, 2)
+cv2.putText(src, ', '.join(str(x) for x in rightmost_point), rightmost_point, cv2.FONT_HERSHEY_SIMPLEX, 1, 128, 2)
 
 cv2.waitKey()
 cv2.destroyAllWindows()
