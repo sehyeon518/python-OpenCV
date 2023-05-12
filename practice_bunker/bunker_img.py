@@ -70,8 +70,7 @@ cv2.drawContours(dst1, contours, -1, (0,255,255), 3)
 leftmost_point = (0,0)
 for i in range(src.shape[1]):
     tmp = np.reshape(dst1[:, i], (src.shape[0], -1)) # column (333,1)
-    result = (tmp==255)
-    indices = np.where(result)[0]
+    indices = np.where(tmp==255)[0]
     if len(indices) > 0:
         leftmost_point = (i, int(np.mean(indices)))
         break
@@ -80,8 +79,7 @@ for i in range(src.shape[1]):
 rightmost_point = (src.shape[1] - 1,0)
 for i in range(src.shape[1]-1, 0, -1):
     tmp = np.reshape(dst1[:, i], (src.shape[0], -1)) # column (333,1)
-    result = (tmp==255)
-    indices = np.where(result)[0]
+    indices = np.where(tmp==255)[0]
     if len(indices) > 0:
         rightmost_point = (i, int(np.mean(indices)))
         break
