@@ -33,6 +33,7 @@ def onMouse(event,x,y,flags,param):     # 마우스 이벤트 핸들 함수  ---
 
 # img read
 src = cv2.imread('/home/sehyeon/Documents/GitHub/python-OpenCV/practice_bunker/bunker_1.jpg')
+src = cv2.resize(src, dsize = (0,0), fx = 2, fy = 2) # 가로 1.5배, 세로 1.2배
 src = cv2.GaussianBlur(src, ksize=(11,11), sigmaX = 10.0)
 cv2.imshow('src', src)
 # src_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
@@ -54,6 +55,7 @@ if roi is not None:
 # 밝은 색 추출
 # cvt color -> black(255) or white(0) -> grayscale로 자동 변환
 dst1 = cv2.inRange(image_with_color, (200, 200, 200), (255, 255, 255)) # 1. BGR
+cv2.imshow('dst1', dst1)
 # dst2 = cv2.inRange(src_hsv, (0, 0, 90), (200, 0, 100))    # 2. HSV
 
 
@@ -91,5 +93,6 @@ cv2.circle(src, rightmost_point, 10, (0,0,255), -1)
 cv2.putText(src, ', '.join(str(x) for x in leftmost_point), leftmost_point, cv2.FONT_HERSHEY_SIMPLEX, 1, 128, 2)
 cv2.putText(src, ', '.join(str(x) for x in rightmost_point), rightmost_point, cv2.FONT_HERSHEY_SIMPLEX, 1, 128, 2)
 
+cv2.imshow('src', src)
 cv2.waitKey()
 cv2.destroyAllWindows()
