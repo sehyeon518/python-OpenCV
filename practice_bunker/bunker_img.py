@@ -63,7 +63,28 @@ method = cv2.CHAIN_APPROX_SIMPLE
 _, contours, hierarchy = cv2.findContours(dst1, mode, method)
 cv2.drawContours(dst1, contours, -1, (0,255,255), 3)
 
-cv2.imshow('dst1', dst1)
+# 가장 왼쪽 점과 가장 오른쪽 점 찾기
+# x = np.zeros((src.shape[0], 1), dtype=np.uint8) + 255 # (333,1)
+leftmost_point = (0,0)
+for i in range(src.shape[1]):
+    tmp = np.reshape(dst1[:, i], (src.shape[0], -1)) # column (333,1)
+    result = (tmp==255)
+    indices = np.where(result)[0]
+    if len(indices) > 0:
+        leftmost_point = (i, int(np.mean(indices)))
+        break
+    else:
+        continue
+rightmost_point = (src.shape[1] - 1,0)
+for i in range(src.shape[1]-1, 0, -1):
+    tmp = np.reshape(dst1[:, i], (src.shape[0], -1)) # column (333,1)
+    result = (tmp==255)
+    indices = np.where(result)[0]
+    if len(indices) > 0:
+        rightmost_point = (i, int(np.mean(indices)))
+        break
+    else:
+        continue
 
 
 cv2.waitKey()
