@@ -33,7 +33,7 @@ def onMouse(event,x,y,flags,param):     # 마우스 이벤트 핸들 함수  ---
 
 # 1. img read
 src = cv2.imread('/home/sehyeon/Documents/GitHub/python-OpenCV/practice_bunker/bunker_1.jpg')
-src = cv2.resize(src, dsize = (0,0), fx = 2, fy = 2) # 가로 1.5배, 세로 1.2배
+src = cv2.resize(src, dsize = (0,0), fx = 2, fy = 2) # 가로 2배, 세로 2배
 src = cv2.GaussianBlur(src, ksize=(11,11), sigmaX = 10.0)
 cv2.imshow('src', src)
 # src_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
@@ -82,6 +82,18 @@ cv2.circle(src, leftmost_point, 10, (0,0,255), -1)
 cv2.circle(src, rightmost_point, 10, (0,0,255), -1)
 cv2.putText(src, ', '.join(str(x) for x in leftmost_point), leftmost_point, cv2.FONT_HERSHEY_SIMPLEX, 1, 128, 2)
 cv2.putText(src, ', '.join(str(x) for x in rightmost_point), rightmost_point, cv2.FONT_HERSHEY_SIMPLEX, 1, 128, 2)
+
+# 6. 카메라 위치(개선 필요)에서의 접선
+center_point = (src.shape[1]//2, src.shape[0])
+cv2.circle(src, (src.shape[1]//2, src.shape[0]), 10, (0,0,200), -1)
+cv2.putText(src, 'cam', center_point, cv2.FONT_HERSHEY_SIMPLEX, 1, 128, 2)
+left_intercept = (0,int((center_point[0]*leftmost_point[1]-center_point[1]*leftmost_point[0])/(center_point[0]-leftmost_point[0])))
+right_intercept = (src.shape[1], int((center_point[0]*rightmost_point[1]-center_point[1]*center_point[0])/(rightmost_point[0]-center_point[0]) + center_point[1]))
+cv2.line(src, left_intercept, center_point, (0, 255, 0), 2)
+cv2.line(src, right_intercept, center_point, (0, 255, 0), 2)
+
+points = np.array([[(0,0), left_intercept, center_point, right_intercept, (src.shape[1],0)]], dtype=np.int32)
+cv2.fillPoly(src, [points], (0,255,0,128))
 
 cv2.imshow('src', src)
 cv2.waitKey()
