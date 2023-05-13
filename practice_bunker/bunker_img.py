@@ -33,7 +33,7 @@ def onMouse(event,x,y,flags,param):     # 마우스 이벤트 핸들 함수  ---
 
 # 1. img read
 src = cv2.imread('/home/sehyeon/Documents/GitHub/python-OpenCV/practice_bunker/bunker_1.jpg')
-src = cv2.resize(src, dsize = (0,0), fx = 2, fy = 2) # 가로 1.5배, 세로 1.2배
+src = cv2.resize(src, dsize = (0,0), fx = 2, fy = 2) # 가로 2배, 세로 2배
 src = cv2.GaussianBlur(src, ksize=(11,11), sigmaX = 10.0)
 cv2.imshow('src', src)
 # src_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
